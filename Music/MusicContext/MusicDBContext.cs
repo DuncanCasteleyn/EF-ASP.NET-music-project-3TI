@@ -10,5 +10,7 @@ namespace Music.MusicContext
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Playlist> Playlists { get; set; }
         public DbSet<Track> Tracks { get; set; }
+        public DbSet<AlbumTrack> AlbumTracks { get; set; }
+        public DbSet<PlaylistTrack> PlaylistTracks { get; set; }
     }
 }
