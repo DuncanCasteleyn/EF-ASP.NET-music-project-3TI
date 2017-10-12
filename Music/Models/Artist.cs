@@ -6,7 +6,7 @@ namespace Music.Models
     {
         public Artist()
         {
-            Artists = new HashSet<Track>();
+            Tracks = new HashSet<Track>();
         }
 
         public int Id { get; set; }
@@ -15,7 +15,7 @@ namespace Music.Models
         public Gender Gender { get; set; }
         public string BirthCountry { get; set; }
 
-        public ICollection<Track> Artists { get; set; }
+        public ICollection<Track> Tracks { get; set; }
     }
 
     public enum Gender
