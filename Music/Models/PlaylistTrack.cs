@@ -16,6 +16,7 @@ namespace Music.Models
         public virtual Track Track { get; set; }
         public virtual Playlist Playlist { get; set; }
 
+        [Required]
         public int TrackNumber { get; set; }
     }
 }
