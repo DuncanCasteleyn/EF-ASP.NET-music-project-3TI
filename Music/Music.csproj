@@ -162,6 +162,7 @@
     <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\Playlist.cs" />
     <Compile Include="Models\Track.cs" />
+    <Compile Include="Views\MusicDbContext.Views.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
