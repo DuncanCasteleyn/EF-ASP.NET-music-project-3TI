@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MusicDataModels
 {
@@ -20,6 +21,7 @@ namespace MusicDataModels
         [Required]
         public int Length { get; set; }
         [Required]
+        [Column(TypeName = "date")]
         public DateTime Release { get; set; }
         [Required]
         public long NumberOfPlay { get; set; }
