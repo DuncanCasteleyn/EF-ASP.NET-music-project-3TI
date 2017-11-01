@@ -20,7 +20,6 @@ namespace MusicDataModels
         public string Name { get; set; }
         [Required]
         [DataType(DataType.Time)]
-        [Column(TypeName = "time")]
         public TimeSpan Length { get; set; }
         [Required]
         [DataType(DataType.Date)]
