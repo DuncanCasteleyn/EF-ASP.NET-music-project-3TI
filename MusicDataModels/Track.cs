@@ -19,8 +19,11 @@ namespace MusicDataModels
         [Required]
         public string Name { get; set; }
         [Required]
-        public int Length { get; set; }
+        [DataType(DataType.Time)]
+        [Column(TypeName = "time")]
+        public TimeSpan Length { get; set; }
         [Required]
+        [DataType(DataType.Date)]
         [Column(TypeName = "date")]
         public DateTime Release { get; set; }
         [Required]
