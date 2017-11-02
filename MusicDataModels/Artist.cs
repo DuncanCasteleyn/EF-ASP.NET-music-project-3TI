@@ -23,6 +23,7 @@ namespace MusicDataModels
     public enum Gender
     {
         Female,
-        Male
+        Male,
+        Other
     }
 }
