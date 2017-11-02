@@ -1,6 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using System.Data.Entity;
+using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using MusicDataLayer;
 
 namespace MusicApplication
 {
@@ -8,6 +10,7 @@ namespace MusicApplication
     {
         protected void Application_Start()
         {
+            Database.SetInitializer(new MusicInitializer());
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
