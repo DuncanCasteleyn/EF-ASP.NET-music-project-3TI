@@ -4,17 +4,16 @@ using System.Net;
 using System.Web.Mvc;
 using MusicDataLayer;
 using MusicDataModels;
+using static MusicDataLayer.DisconnectedMusicContext.PlaylistManager;
 
 namespace MusicApplication.Controllers
 {
     public class PlaylistsController : Controller
     {
-        private MusicDbContext db = new MusicDbContext();
-
         // GET: Playlists
         public ActionResult Index()
         {
-            return View(db.Playlists.ToList());
+            return View(GetPlaylists());
         }
 
         // GET: Playlists/Details/5
@@ -24,7 +23,7 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Playlist playlist = db.Playlists.Find(id);
+            Playlist playlist = GetPlaylist(id.Value);
             if (playlist == null)
             {
                 return HttpNotFound();
@@ -47,8 +46,7 @@ namespace MusicApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Playlists.Add(playlist);
-                db.SaveChanges();
+                AddPlaylist(playlist);
                 return RedirectToAction("Index");
             }
 
@@ -62,7 +60,7 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Playlist playlist = db.Playlists.Find(id);
+            Playlist playlist = GetPlaylist(id.Value);
             if (playlist == null)
             {
                 return HttpNotFound();
@@ -79,8 +77,7 @@ namespace MusicApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(playlist).State = EntityState.Modified;
-                db.SaveChanges();
+                EditPlaylist(playlist);
                 return RedirectToAction("Index");
             }
             return View(playlist);
@@ -93,7 +90,7 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Playlist playlist = db.Playlists.Find(id);
+            Playlist playlist = GetPlaylist(id.Value);
             if (playlist == null)
             {
                 return HttpNotFound();
@@ -106,19 +103,9 @@ namespace MusicApplication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Playlist playlist = db.Playlists.Find(id);
-            db.Playlists.Remove(playlist);
-            db.SaveChanges();
+            Playlist playlist = GetPlaylist(id);
+            DeletePlaylist(playlist);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

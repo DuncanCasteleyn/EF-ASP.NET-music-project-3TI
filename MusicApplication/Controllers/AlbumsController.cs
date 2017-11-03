@@ -1,20 +1,16 @@
-﻿using System.Data.Entity;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Web.Mvc;
-using MusicDataLayer;
 using MusicDataModels;
+using static MusicDataLayer.DisconnectedMusicContext.AlbumsManager;
 
 namespace MusicApplication.Controllers
 {
     public class AlbumsController : Controller
     {
-        private MusicDbContext db = new MusicDbContext();
-
         // GET: Albums
         public ActionResult Index()
         {
-            return View(db.Albums.ToList());
+            return View(GetAlbums());
         }
 
         // GET: Albums/Details/5
@@ -24,7 +20,7 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Album album = db.Albums.Find(id);
+            Album album = GetAlbum(id.Value);
             if (album == null)
             {
                 return HttpNotFound();
@@ -47,8 +43,7 @@ namespace MusicApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Albums.Add(album);
-                db.SaveChanges();
+                AddAlbum(album);
                 return RedirectToAction("Index");
             }
 
@@ -62,7 +57,7 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Album album = db.Albums.Find(id);
+            Album album = GetAlbum(id.Value);
             if (album == null)
             {
                 return HttpNotFound();
@@ -79,8 +74,7 @@ namespace MusicApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(album).State = EntityState.Modified;
-                db.SaveChanges();
+                EditAlbum(album);
                 return RedirectToAction("Index");
             }
             return View(album);
@@ -93,7 +87,7 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Album album = db.Albums.Find(id);
+            Album album = GetAlbum(id.Value);
             if (album == null)
             {
                 return HttpNotFound();
@@ -106,19 +100,9 @@ namespace MusicApplication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Album album = db.Albums.Find(id);
-            db.Albums.Remove(album);
-            db.SaveChanges();
+            Album album = GetAlbum(id);
+            DeleteAlbum(album);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

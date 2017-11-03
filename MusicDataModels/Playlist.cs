@@ -7,13 +7,13 @@ namespace MusicDataModels
     {
         public Playlist()
         {
-            PlayListTracks = new HashSet<PlayListTrack>();
+            PlayListTracks = new HashSet<PlaylistTrack>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
 
         [Required]
-        public ICollection<PlayListTrack> PlayListTracks { get; set; }
+        public ICollection<PlaylistTrack> PlayListTracks { get; set; }
     }
 }

@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DisconnectedMusicContext.cs" />
     <Compile Include="MusicDBContext.cs" />
     <Compile Include="MusicInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

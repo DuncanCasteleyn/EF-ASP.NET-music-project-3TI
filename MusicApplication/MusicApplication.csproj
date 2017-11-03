@@ -154,7 +154,7 @@
     <Compile Include="Controllers\GenresController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PlaylistsController.cs" />
-    <Compile Include="Controllers\PlayListTracksController.cs" />
+    <Compile Include="Controllers\PlaylistTracksController.cs" />
     <Compile Include="Controllers\TracksController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -228,11 +228,11 @@
     <Content Include="Views\Playlists\Details.cshtml" />
     <Content Include="Views\Playlists\Edit.cshtml" />
     <Content Include="Views\Playlists\Index.cshtml" />
-    <Content Include="Views\PlayListTracks\Create.cshtml" />
-    <Content Include="Views\PlayListTracks\Delete.cshtml" />
-    <Content Include="Views\PlayListTracks\Details.cshtml" />
-    <Content Include="Views\PlayListTracks\Edit.cshtml" />
-    <Content Include="Views\PlayListTracks\Index.cshtml" />
+    <Content Include="Views\PlaylistTracks\Create.cshtml" />
+    <Content Include="Views\PlaylistTracks\Delete.cshtml" />
+    <Content Include="Views\PlaylistTracks\Details.cshtml" />
+    <Content Include="Views\PlaylistTracks\Edit.cshtml" />
+    <Content Include="Views\PlaylistTracks\Index.cshtml" />
     <Content Include="Views\Tracks\Create.cshtml" />
     <Content Include="Views\Tracks\Delete.cshtml" />
     <Content Include="Views\Tracks\Details.cshtml" />

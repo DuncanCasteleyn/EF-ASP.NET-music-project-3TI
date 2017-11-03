@@ -4,17 +4,17 @@ using System.Net;
 using System.Web.Mvc;
 using MusicDataLayer;
 using MusicDataModels;
+using static MusicDataLayer.DisconnectedMusicContext.TrackManager;
 
 namespace MusicApplication.Controllers
 {
     public class TracksController : Controller
     {
-        private MusicDbContext db = new MusicDbContext();
 
         // GET: Tracks
         public ActionResult Index()
         {
-            return View(db.Tracks.ToList());
+            return View(GetTracks());
         }
 
         // GET: Tracks/Details/5
@@ -24,7 +24,7 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Track track = db.Tracks.Find(id);
+            Track track = GetTrack(id.Value);
             if (track == null)
             {
                 return HttpNotFound();
@@ -47,8 +47,7 @@ namespace MusicApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Tracks.Add(track);
-                db.SaveChanges();
+                AddTrack(track);
                 return RedirectToAction("Index");
             }
 
@@ -62,7 +61,7 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Track track = db.Tracks.Find(id);
+            Track track = GetTrack(id.Value);
             if (track == null)
             {
                 return HttpNotFound();
@@ -79,8 +78,7 @@ namespace MusicApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(track).State = EntityState.Modified;
-                db.SaveChanges();
+                EditTrack(track);
                 return RedirectToAction("Index");
             }
             return View(track);
@@ -93,7 +91,7 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Track track = db.Tracks.Find(id);
+            Track track = GetTrack(id.Value);
             if (track == null)
             {
                 return HttpNotFound();
@@ -106,19 +104,9 @@ namespace MusicApplication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Track track = db.Tracks.Find(id);
-            db.Tracks.Remove(track);
-            db.SaveChanges();
+            Track track = GetTrack(id);
+            DeleteTrack(track);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

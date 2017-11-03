@@ -12,7 +12,7 @@ namespace MusicDataModels
             Artists = new HashSet<Artist>();
             Genres = new HashSet<Genre>();
             AlbumTracks = new HashSet<AlbumTrack>();
-            PlaylistTracks = new HashSet<PlayListTrack>();
+            PlaylistTracks = new HashSet<PlaylistTrack>();
         }
 
         public int Id { get; set; }
@@ -35,6 +35,6 @@ namespace MusicDataModels
         [Required]
         public ICollection<Genre> Genres { get; set; }
         public ICollection<AlbumTrack> AlbumTracks { get; set; }
-        public ICollection<PlayListTrack> PlaylistTracks { get; set; }
+        public ICollection<PlaylistTrack> PlaylistTracks { get; set; }
     }
 }

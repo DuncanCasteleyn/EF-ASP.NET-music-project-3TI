@@ -36,9 +36,9 @@ namespace MusicDataLayer
             tracks[0].AlbumTracks = albumTracks;
 
             var playlist = new Playlist { Name = "Example play list" };
-            var playListTracks = new List<PlayListTrack>
+            var playListTracks = new List<PlaylistTrack>
             {
-                new PlayListTrack{Playlist = playlist, Track = tracks[0], TrackNumber = 0}
+                new PlaylistTrack{Playlist = playlist, Track = tracks[0], TrackNumber = 0}
             };
             playlist.PlayListTracks = playListTracks;
             tracks[0].PlaylistTracks = playListTracks;
@@ -49,7 +49,7 @@ namespace MusicDataLayer
             context.Albums.Add(album);
             context.Playlists.Add(playlist);
             albumTracks.ForEach(albumTrack => context.AlbumTracks.Add(albumTrack));
-            playListTracks.ForEach(playListTrack => context.PlayListTracks.Add(playListTrack));
+            playListTracks.ForEach(playListTrack => context.PlaylistTracks.Add(playListTrack));
             context.SaveChanges();
         }
     }

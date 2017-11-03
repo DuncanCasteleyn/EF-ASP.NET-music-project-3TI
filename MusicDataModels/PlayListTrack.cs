@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MusicDataModels
 {
-    public class PlayListTrack
+    public class PlaylistTrack
     {
         [Key]
         [Column(Order = 0)]

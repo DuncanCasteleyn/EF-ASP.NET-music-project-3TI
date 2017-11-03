@@ -1,20 +1,17 @@
-﻿using System.Data.Entity;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Web.Mvc;
-using MusicDataLayer;
 using MusicDataModels;
+using static MusicDataLayer.DisconnectedMusicContext.GenresManager;
 
 namespace MusicApplication.Controllers
 {
     public class GenresController : Controller
     {
-        private MusicDbContext db = new MusicDbContext();
 
         // GET: Genres
         public ActionResult Index()
         {
-            return View(db.Genres.ToList());
+            return View(GetGenres());
         }
 
         // GET: Genres/Details/5
@@ -24,7 +21,7 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Genre genre = db.Genres.Find(id);
+            Genre genre = GetGenre(id.Value);
             if (genre == null)
             {
                 return HttpNotFound();
@@ -47,8 +44,7 @@ namespace MusicApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Genres.Add(genre);
-                db.SaveChanges();
+                AddGenre(genre);
                 return RedirectToAction("Index");
             }
 
@@ -62,7 +58,7 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Genre genre = db.Genres.Find(id);
+            Genre genre = GetGenre(id.Value);
             if (genre == null)
             {
                 return HttpNotFound();
@@ -79,8 +75,7 @@ namespace MusicApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(genre).State = EntityState.Modified;
-                db.SaveChanges();
+                EditGenre(genre);
                 return RedirectToAction("Index");
             }
             return View(genre);
@@ -93,7 +88,7 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Genre genre = db.Genres.Find(id);
+            Genre genre = GetGenre(id.Value);
             if (genre == null)
             {
                 return HttpNotFound();
@@ -106,19 +101,9 @@ namespace MusicApplication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Genre genre = db.Genres.Find(id);
-            db.Genres.Remove(genre);
-            db.SaveChanges();
+            Genre genre = GetGenre(id);
+            DeleteGenre(genre);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

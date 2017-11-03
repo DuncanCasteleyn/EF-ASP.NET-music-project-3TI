@@ -1,21 +1,18 @@
-﻿using System.Data.Entity;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Web.Mvc;
 using MusicDataLayer;
 using MusicDataModels;
+using static MusicDataLayer.DisconnectedMusicContext.AlbumTracksManager;
 
 namespace MusicApplication.Controllers
 {
     public class AlbumTracksController : Controller
     {
-        private MusicDbContext db = new MusicDbContext();
 
         // GET: AlbumTracks
         public ActionResult Index()
         {
-            var albumTracks = db.AlbumTracks.Include(a => a.Album).Include(a => a.Track);
-            return View(albumTracks.ToList());
+            return View(GetAlbumTracks());
         }
 
         // GET: AlbumTracks/Details/5
@@ -25,7 +22,7 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AlbumTrack albumTrack = db.AlbumTracks.Find(id);
+            AlbumTrack albumTrack = GetAlbumTrack(id.Value);
             if (albumTrack == null)
             {
                 return HttpNotFound();
@@ -36,9 +33,12 @@ namespace MusicApplication.Controllers
         // GET: AlbumTracks/Create
         public ActionResult Create()
         {
-            ViewBag.AlbumId = new SelectList(db.Albums, "Id", "Name");
-            ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name");
-            return View();
+            using (var db = new MusicDbContext())
+            {
+                ViewBag.AlbumId = new SelectList(db.Albums, "Id", "Name");
+                ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name");
+                return View();
+            }
         }
 
         // POST: AlbumTracks/Create
@@ -50,14 +50,15 @@ namespace MusicApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.AlbumTracks.Add(albumTrack);
-                db.SaveChanges();
+                AddAlbumTrack(albumTrack);
                 return RedirectToAction("Index");
             }
-
-            ViewBag.AlbumId = new SelectList(db.Albums, "Id", "Name", albumTrack.AlbumId);
-            ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name", albumTrack.TrackId);
-            return View(albumTrack);
+            using (var db = new MusicDbContext())
+            {
+                ViewBag.AlbumId = new SelectList(db.Albums, "Id", "Name", albumTrack.AlbumId);
+                ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name", albumTrack.TrackId);
+                return View(albumTrack);
+            }
         }
 
         // GET: AlbumTracks/Edit/5
@@ -67,14 +68,17 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AlbumTrack albumTrack = db.AlbumTracks.Find(id);
+            AlbumTrack albumTrack = GetAlbumTrack(id.Value);
             if (albumTrack == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.AlbumId = new SelectList(db.Albums, "Id", "Name", albumTrack.AlbumId);
-            ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name", albumTrack.TrackId);
-            return View(albumTrack);
+            using (var db = new MusicDbContext())
+            {
+                ViewBag.AlbumId = new SelectList(db.Albums, "Id", "Name", albumTrack.AlbumId);
+                ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name", albumTrack.TrackId);
+                return View(albumTrack);
+            }
         }
 
         // POST: AlbumTracks/Edit/5
@@ -86,13 +90,15 @@ namespace MusicApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(albumTrack).State = EntityState.Modified;
-                db.SaveChanges();
+                EditAlbumTrack(albumTrack);
                 return RedirectToAction("Index");
             }
-            ViewBag.AlbumId = new SelectList(db.Albums, "Id", "Name", albumTrack.AlbumId);
-            ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name", albumTrack.TrackId);
-            return View(albumTrack);
+            using (var db = new MusicDbContext())
+            {
+                ViewBag.AlbumId = new SelectList(db.Albums, "Id", "Name", albumTrack.AlbumId);
+                ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name", albumTrack.TrackId);
+                return View(albumTrack);
+            }
         }
 
         // GET: AlbumTracks/Delete/5
@@ -102,7 +108,7 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AlbumTrack albumTrack = db.AlbumTracks.Find(id);
+            AlbumTrack albumTrack = GetAlbumTrack(id.Value);
             if (albumTrack == null)
             {
                 return HttpNotFound();
@@ -115,19 +121,9 @@ namespace MusicApplication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            AlbumTrack albumTrack = db.AlbumTracks.Find(id);
-            db.AlbumTracks.Remove(albumTrack);
-            db.SaveChanges();
+            AlbumTrack albumTrack = GetAlbumTrack(id);
+            DeleteAlbumTrack(albumTrack);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

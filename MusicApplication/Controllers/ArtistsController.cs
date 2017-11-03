@@ -1,20 +1,17 @@
-﻿using System.Data.Entity;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Web.Mvc;
-using MusicDataLayer;
 using MusicDataModels;
+using static MusicDataLayer.DisconnectedMusicContext.ArtistsManager;
 
 namespace MusicApplication.Controllers
 {
     public class ArtistsController : Controller
     {
-        private MusicDbContext db = new MusicDbContext();
 
         // GET: Artists
         public ActionResult Index()
         {
-            return View(db.Artists.ToList());
+            return View(GetArtists());
         }
 
         // GET: Artists/Details/5
@@ -24,7 +21,7 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Artist artist = db.Artists.Find(id);
+            Artist artist = GetArtist(id.Value);
             if (artist == null)
             {
                 return HttpNotFound();
@@ -47,8 +44,7 @@ namespace MusicApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Artists.Add(artist);
-                db.SaveChanges();
+                AddArtist(artist);
                 return RedirectToAction("Index");
             }
 
@@ -62,7 +58,7 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Artist artist = db.Artists.Find(id);
+            Artist artist = GetArtist(id.Value);
             if (artist == null)
             {
                 return HttpNotFound();
@@ -79,8 +75,7 @@ namespace MusicApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(artist).State = EntityState.Modified;
-                db.SaveChanges();
+                EditArtist(artist);
                 return RedirectToAction("Index");
             }
             return View(artist);
@@ -93,7 +88,7 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Artist artist = db.Artists.Find(id);
+            Artist artist = GetArtist(id.Value);
             if (artist == null)
             {
                 return HttpNotFound();
@@ -106,19 +101,9 @@ namespace MusicApplication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Artist artist = db.Artists.Find(id);
-            db.Artists.Remove(artist);
-            db.SaveChanges();
+            Artist artist = GetArtist(id);
+            DeleteArtist(artist);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }
