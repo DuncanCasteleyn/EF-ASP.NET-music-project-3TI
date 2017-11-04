@@ -55,6 +55,8 @@
     <Compile Include="PlayListTrack.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Track.cs" />
+    <Compile Include="TrackArtist.cs" />
+    <Compile Include="TrackGenre.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
