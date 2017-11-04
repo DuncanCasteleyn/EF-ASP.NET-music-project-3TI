@@ -5,118 +5,118 @@ using System.Web.Mvc;
 using MusicDataLayer;
 using MusicDataModels;
 
-namespace MusicApplication.Controllers
+namespace MusicApplication.Controllers.Relations
 {
-    public class PlayListTracksController : Controller
+    public class AlbumTracksController : Controller
     {
         private MusicDbContext db = new MusicDbContext();
 
-        // GET: PlayListTracks
+        // GET: AlbumTracks
         public ActionResult Index()
         {
-            var playListTracks = db.PlayListTracks.Include(p => p.Playlist).Include(p => p.Track);
-            return View(playListTracks.ToList());
+            var albumTracks = db.AlbumTracks.Include(a => a.Album).Include(a => a.Track);
+            return View(albumTracks.ToList());
         }
 
-        // GET: PlayListTracks/Details/5
+        // GET: AlbumTracks/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PlayListTrack playListTrack = db.PlayListTracks.Find(id);
-            if (playListTrack == null)
+            AlbumTrack albumTrack = db.AlbumTracks.Find(id);
+            if (albumTrack == null)
             {
                 return HttpNotFound();
             }
-            return View(playListTrack);
+            return View(albumTrack);
         }
 
-        // GET: PlayListTracks/Create
+        // GET: AlbumTracks/Create
         public ActionResult Create()
         {
-            ViewBag.PlaylistId = new SelectList(db.Playlists, "Id", "Name");
+            ViewBag.AlbumId = new SelectList(db.Albums, "Id", "Name");
             ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name");
             return View();
         }
 
-        // POST: PlayListTracks/Create
+        // POST: AlbumTracks/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TrackId,PlaylistId,TrackNumber")] PlayListTrack playListTrack)
+        public ActionResult Create([Bind(Include = "TrackId,AlbumId,TrackNumber")] AlbumTrack albumTrack)
         {
             if (ModelState.IsValid)
             {
-                db.PlayListTracks.Add(playListTrack);
+                db.AlbumTracks.Add(albumTrack);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.PlaylistId = new SelectList(db.Playlists, "Id", "Name", playListTrack.PlaylistId);
-            ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name", playListTrack.TrackId);
-            return View(playListTrack);
+            ViewBag.AlbumId = new SelectList(db.Albums, "Id", "Name", albumTrack.AlbumId);
+            ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name", albumTrack.TrackId);
+            return View(albumTrack);
         }
 
-        // GET: PlayListTracks/Edit/5
+        // GET: AlbumTracks/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PlayListTrack playListTrack = db.PlayListTracks.Find(id);
-            if (playListTrack == null)
+            AlbumTrack albumTrack = db.AlbumTracks.Find(id);
+            if (albumTrack == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.PlaylistId = new SelectList(db.Playlists, "Id", "Name", playListTrack.PlaylistId);
-            ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name", playListTrack.TrackId);
-            return View(playListTrack);
+            ViewBag.AlbumId = new SelectList(db.Albums, "Id", "Name", albumTrack.AlbumId);
+            ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name", albumTrack.TrackId);
+            return View(albumTrack);
         }
 
-        // POST: PlayListTracks/Edit/5
+        // POST: AlbumTracks/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "TrackId,PlaylistId,TrackNumber")] PlayListTrack playListTrack)
+        public ActionResult Edit([Bind(Include = "TrackId,AlbumId,TrackNumber")] AlbumTrack albumTrack)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(playListTrack).State = EntityState.Modified;
+                db.Entry(albumTrack).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.PlaylistId = new SelectList(db.Playlists, "Id", "Name", playListTrack.PlaylistId);
-            ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name", playListTrack.TrackId);
-            return View(playListTrack);
+            ViewBag.AlbumId = new SelectList(db.Albums, "Id", "Name", albumTrack.AlbumId);
+            ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name", albumTrack.TrackId);
+            return View(albumTrack);
         }
 
-        // GET: PlayListTracks/Delete/5
+        // GET: AlbumTracks/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PlayListTrack playListTrack = db.PlayListTracks.Find(id);
-            if (playListTrack == null)
+            AlbumTrack albumTrack = db.AlbumTracks.Find(id);
+            if (albumTrack == null)
             {
                 return HttpNotFound();
             }
-            return View(playListTrack);
+            return View(albumTrack);
         }
 
-        // POST: PlayListTracks/Delete/5
+        // POST: AlbumTracks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            PlayListTrack playListTrack = db.PlayListTracks.Find(id);
-            db.PlayListTracks.Remove(playListTrack);
+            AlbumTrack albumTrack = db.AlbumTracks.Find(id);
+            db.AlbumTracks.Remove(albumTrack);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

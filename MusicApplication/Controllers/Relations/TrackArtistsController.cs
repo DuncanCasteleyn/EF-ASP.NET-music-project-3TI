@@ -5,118 +5,118 @@ using System.Web.Mvc;
 using MusicDataLayer;
 using MusicDataModels;
 
-namespace MusicApplication.Controllers
+namespace MusicApplication.Controllers.Relations
 {
-    public class TrackGenresController : Controller
+    public class TrackArtistsController : Controller
     {
         private MusicDbContext db = new MusicDbContext();
 
-        // GET: TrackGenres
+        // GET: TrackArtists
         public ActionResult Index()
         {
-            var trackGenres = db.TrackGenres.Include(t => t.Genre).Include(t => t.Track);
-            return View(trackGenres.ToList());
+            var trackArtists = db.TrackArtists.Include(t => t.Artist).Include(t => t.Track);
+            return View(trackArtists.ToList());
         }
 
-        // GET: TrackGenres/Details/5
+        // GET: TrackArtists/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TrackGenre trackGenre = db.TrackGenres.Find(id);
-            if (trackGenre == null)
+            TrackArtist trackArtist = db.TrackArtists.Find(id);
+            if (trackArtist == null)
             {
                 return HttpNotFound();
             }
-            return View(trackGenre);
+            return View(trackArtist);
         }
 
-        // GET: TrackGenres/Create
+        // GET: TrackArtists/Create
         public ActionResult Create()
         {
-            ViewBag.GenreId = new SelectList(db.Genres, "Id", "Name");
+            ViewBag.ArtistId = new SelectList(db.Artists, "Id", "Name");
             ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name");
             return View();
         }
 
-        // POST: TrackGenres/Create
+        // POST: TrackArtists/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TrackId,GenreId")] TrackGenre trackGenre)
+        public ActionResult Create([Bind(Include = "TrackId,ArtistId")] TrackArtist trackArtist)
         {
             if (ModelState.IsValid)
             {
-                db.TrackGenres.Add(trackGenre);
+                db.TrackArtists.Add(trackArtist);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.GenreId = new SelectList(db.Genres, "Id", "Name", trackGenre.GenreId);
-            ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name", trackGenre.TrackId);
-            return View(trackGenre);
+            ViewBag.ArtistId = new SelectList(db.Artists, "Id", "Name", trackArtist.ArtistId);
+            ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name", trackArtist.TrackId);
+            return View(trackArtist);
         }
 
-        // GET: TrackGenres/Edit/5
+        // GET: TrackArtists/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TrackGenre trackGenre = db.TrackGenres.Find(id);
-            if (trackGenre == null)
+            TrackArtist trackArtist = db.TrackArtists.Find(id);
+            if (trackArtist == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.GenreId = new SelectList(db.Genres, "Id", "Name", trackGenre.GenreId);
-            ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name", trackGenre.TrackId);
-            return View(trackGenre);
+            ViewBag.ArtistId = new SelectList(db.Artists, "Id", "Name", trackArtist.ArtistId);
+            ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name", trackArtist.TrackId);
+            return View(trackArtist);
         }
 
-        // POST: TrackGenres/Edit/5
+        // POST: TrackArtists/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "TrackId,GenreId")] TrackGenre trackGenre)
+        public ActionResult Edit([Bind(Include = "TrackId,ArtistId")] TrackArtist trackArtist)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(trackGenre).State = EntityState.Modified;
+                db.Entry(trackArtist).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.GenreId = new SelectList(db.Genres, "Id", "Name", trackGenre.GenreId);
-            ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name", trackGenre.TrackId);
-            return View(trackGenre);
+            ViewBag.ArtistId = new SelectList(db.Artists, "Id", "Name", trackArtist.ArtistId);
+            ViewBag.TrackId = new SelectList(db.Tracks, "Id", "Name", trackArtist.TrackId);
+            return View(trackArtist);
         }
 
-        // GET: TrackGenres/Delete/5
+        // GET: TrackArtists/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TrackGenre trackGenre = db.TrackGenres.Find(id);
-            if (trackGenre == null)
+            TrackArtist trackArtist = db.TrackArtists.Find(id);
+            if (trackArtist == null)
             {
                 return HttpNotFound();
             }
-            return View(trackGenre);
+            return View(trackArtist);
         }
 
-        // POST: TrackGenres/Delete/5
+        // POST: TrackArtists/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            TrackGenre trackGenre = db.TrackGenres.Find(id);
-            db.TrackGenres.Remove(trackGenre);
+            TrackArtist trackArtist = db.TrackArtists.Find(id);
+            db.TrackArtists.Remove(trackArtist);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
