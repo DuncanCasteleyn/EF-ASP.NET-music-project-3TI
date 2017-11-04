@@ -5,15 +5,17 @@ namespace MusicDataModels
 {
     public class TrackArtist
     {
-        [Key]
         [Column(Order = 0)]
-        public int TrackId { get; set; }
+        public int Id;
 
         [Key]
         [Column(Order = 1)]
-        public int ArtistId { get; set; }
+        public int TrackId { get; set; }
+        public Track Track { get; set; }
 
-        public virtual Track Track { get; set; }
-        public virtual Artist Artist { get; set; }
+        [Key]
+        [Column(Order = 2)]
+        public int ArtistId { get; set; }
+        public Artist Artist { get; set; }
     }
 }

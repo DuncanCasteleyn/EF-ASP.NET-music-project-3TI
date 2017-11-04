@@ -5,16 +5,18 @@ namespace MusicDataModels
 {
     public class TrackGenre
     {
-        [Key]
         [Column(Order = 0)]
-        public int TrackId { get; set; }
+        public int Id { get; set; }
 
         [Key]
         [Column(Order = 1)]
-        public int GenreId { get; set; }
+        public int TrackId { get; set; }
+        public Track Track { get; set; }
 
-        public virtual Track Track { get; set; }
-        public virtual Genre Genre { get; set; }
+        [Key]
+        [Column(Order = 2)]
+        public int GenreId { get; set; }
+        public Genre Genre { get; set; }
 
     }
 }

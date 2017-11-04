@@ -149,14 +149,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AlbumsController.cs" />
-    <Compile Include="Controllers\AlbumTracksController.cs" />
     <Compile Include="Controllers\ArtistsController.cs" />
     <Compile Include="Controllers\GenresController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PlaylistsController.cs" />
-    <Compile Include="Controllers\PlayListTracksController.cs" />
-    <Compile Include="Controllers\TrackArtistsController.cs" />
-    <Compile Include="Controllers\TrackGenresController.cs" />
+    <Compile Include="Controllers\RelationControllers\AlbumTracksController.cs" />
     <Compile Include="Controllers\TracksController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -235,21 +232,6 @@
     <Content Include="Views\AlbumTracks\Details.cshtml" />
     <Content Include="Views\AlbumTracks\Edit.cshtml" />
     <Content Include="Views\AlbumTracks\Index.cshtml" />
-    <Content Include="Views\PlayListTracks\Create.cshtml" />
-    <Content Include="Views\PlayListTracks\Delete.cshtml" />
-    <Content Include="Views\PlayListTracks\Details.cshtml" />
-    <Content Include="Views\PlayListTracks\Edit.cshtml" />
-    <Content Include="Views\PlayListTracks\Index.cshtml" />
-    <Content Include="Views\TrackArtists\Create.cshtml" />
-    <Content Include="Views\TrackArtists\Delete.cshtml" />
-    <Content Include="Views\TrackArtists\Details.cshtml" />
-    <Content Include="Views\TrackArtists\Edit.cshtml" />
-    <Content Include="Views\TrackArtists\Index.cshtml" />
-    <Content Include="Views\TrackGenres\Create.cshtml" />
-    <Content Include="Views\TrackGenres\Delete.cshtml" />
-    <Content Include="Views\TrackGenres\Details.cshtml" />
-    <Content Include="Views\TrackGenres\Edit.cshtml" />
-    <Content Include="Views\TrackGenres\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
