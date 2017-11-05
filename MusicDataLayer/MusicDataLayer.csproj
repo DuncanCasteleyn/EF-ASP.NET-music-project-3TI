@@ -52,6 +52,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\201711051128119_Deployment.cs" />
+    <Compile Include="Migrations\201711051128119_Deployment.Designer.cs">
+      <DependentUpon>201711051128119_Deployment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MusicDBContext.cs" />
     <Compile Include="MusicInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,6 +70,11 @@
       <Project>{6b87c6cf-28c5-479c-b70e-334d4c2d6a9c}</Project>
       <Name>MusicDataModels</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201711051128119_Deployment.resx">
+      <DependentUpon>201711051128119_Deployment.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
