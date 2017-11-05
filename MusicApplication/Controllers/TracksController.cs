@@ -29,15 +29,16 @@ namespace MusicApplication.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Track track = db.Tracks
-                .Include(track1 => track1.Artists)
-                .Include(track1 => track1.Genres)
-                .FirstOrDefault(track1 => track1.Id == id);
+            Track track = db.Tracks.Find(id);
 
             if (track == null)
             {
                 return HttpNotFound();
             }
+
+            db.Entry(track).Collection(track1 => track1.Artists).Load();
+            db.Entry(track).Collection(track1 => track1.Genres).Load();
+
             return View(track);
         }
 
@@ -138,6 +139,9 @@ namespace MusicApplication.Controllers
         {
             if (ModelState.IsValid)
             {
+                /* Causes a key error due to the fact that we are creating a new collection which is untracked which will cause duplicated keys
+                    Need to filter our the added keys and the find the removed keys
+                
                 var artists = db.Artists.Include(artist => artist.Tracks).ToList().FindAll(artist => trackView.SelectedArtists.Contains(artist.Id));
                 var genres = db.Genres.Include(genre => genre.Tracks).ToList().FindAll(genre => trackView.SelectedGenres.Contains(genre.Id));
                 trackView.Track.Artists = artists;
@@ -145,6 +149,7 @@ namespace MusicApplication.Controllers
                 artists.ForEach(artist => artist.Tracks.Add(trackView.Track));
                 genres.ForEach(genre => genre.Tracks.Add(trackView.Track));
 
+                db.Tracks.Attach(trackView.Track);*/
                 db.Entry(trackView.Track).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -159,15 +164,16 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Track track = db.Tracks
-                .Include(track1 => track1.Artists)
-                .Include(track1 => track1.Genres)
-                .FirstOrDefault(i => i.Id == id);
+            Track track = db.Tracks.Find(id);
 
             if (track == null)
             {
                 return HttpNotFound();
             }
+
+            db.Entry(track).Collection(track1 => track1.Artists).Load();
+            db.Entry(track).Collection(track1 => track1.Genres).Load();
+
             return View(track);
         }
 
