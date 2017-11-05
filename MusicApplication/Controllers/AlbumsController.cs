@@ -4,6 +4,7 @@ using System.Net;
 using System.Web.Mvc;
 using MusicDataLayer;
 using MusicDataModels;
+using WebGrease.Css.Extensions;
 
 namespace MusicApplication.Controllers
 {
@@ -14,7 +15,12 @@ namespace MusicApplication.Controllers
         // GET: Albums
         public ActionResult Index()
         {
-            return View(db.Albums.ToList());
+            var albums = db.Albums.Include(album => album.AlbumTracks);
+            albums.ForEach(album =>
+            {
+                album.AlbumTracks.ForEach(track => track.Track = db.Tracks.Find(track.TrackId));
+            });
+            return View(albums);
         }
 
         // GET: Albums/Details/5
@@ -25,10 +31,12 @@ namespace MusicApplication.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Album album = db.Albums.Find(id);
+            db.Entry(album).Collection(album1 => album1.AlbumTracks).Load();
             if (album == null)
             {
                 return HttpNotFound();
             }
+            album.AlbumTracks.ForEach(track => track.Track = db.Tracks.Find(track.TrackId));
             return View(album);
         }
 
@@ -52,6 +60,7 @@ namespace MusicApplication.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.TrackList = new MultiSelectList(db.PlayListTracks, "TrackId", "Track.Name");
             return View(album);
         }
 

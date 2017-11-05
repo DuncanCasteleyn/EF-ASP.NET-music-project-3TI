@@ -29,6 +29,9 @@
             @Html.DisplayFor(modelItem => item.Release)
         </td>
         <td>
+            @Html.ListBox("TrackId", new SelectList(item.AlbumTracks, "TrackId", "Track.Name"))
+        </td>
+        <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Details", "Details", new { id=item.Id }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })

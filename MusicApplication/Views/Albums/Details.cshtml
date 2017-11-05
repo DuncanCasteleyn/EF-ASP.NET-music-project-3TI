@@ -25,6 +25,14 @@
         <dd>
             @Html.DisplayFor(model => model.Release)
         </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.AlbumTracks)
+        </dt>
+
+        <dd>
+            @Html.ListBox("TrackId", new SelectList(Model.AlbumTracks, "TrackId", "Track.Name"))
+        </dd>
 
     </dl>
 </div>
