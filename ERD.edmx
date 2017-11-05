@@ -1,0 +1,540 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Edmx Version="3.0" xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <Runtime>
+    <ConceptualModels>
+      <Schema Namespace="MusicDataLayer" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Album" customannotation:ClrType="MusicDataModels.Album, MusicDataModels, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Release" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="AlbumTracks" Relationship="Self.AlbumTrack_Album" FromRole="AlbumTrack_Album_Target" ToRole="AlbumTrack_Album_Source" />
+        </EntityType>
+        <EntityType Name="AlbumTrack" customannotation:ClrType="MusicDataModels.AlbumTrack, MusicDataModels, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="TrackId" />
+            <PropertyRef Name="AlbumId" />
+          </Key>
+          <Property Name="TrackId" Type="Int32" Nullable="false" />
+          <Property Name="AlbumId" Type="Int32" Nullable="false" />
+          <Property Name="TrackNumber" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Album" Relationship="Self.AlbumTrack_Album" FromRole="AlbumTrack_Album_Source" ToRole="AlbumTrack_Album_Target" />
+          <NavigationProperty Name="Track" Relationship="Self.Track_AlbumTracks" FromRole="Track_AlbumTracks_Target" ToRole="Track_AlbumTracks_Source" />
+        </EntityType>
+        <EntityType Name="Track" customannotation:ClrType="MusicDataModels.Track, MusicDataModels, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Length" Type="Time" Nullable="false" />
+          <Property Name="Release" Type="DateTime" Nullable="false" />
+          <Property Name="NumberOfPlay" Type="Int64" Nullable="false" />
+          <Property Name="TrackLocation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AlbumTracks" Relationship="Self.Track_AlbumTracks" FromRole="Track_AlbumTracks_Source" ToRole="Track_AlbumTracks_Target" />
+          <NavigationProperty Name="Artists" Relationship="Self.Artist_Tracks" FromRole="Artist_Tracks_Target" ToRole="Artist_Tracks_Source" />
+          <NavigationProperty Name="Genres" Relationship="Self.Genre_Tracks" FromRole="Genre_Tracks_Target" ToRole="Genre_Tracks_Source" />
+          <NavigationProperty Name="PlaylistTracks" Relationship="Self.PlayListTrack_Track" FromRole="PlayListTrack_Track_Target" ToRole="PlayListTrack_Track_Source" />
+        </EntityType>
+        <EntityType Name="Artist" customannotation:ClrType="MusicDataModels.Artist, MusicDataModels, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RealName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="Self.Gender" Nullable="false" />
+          <Property Name="BirthCountry" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tracks" Relationship="Self.Artist_Tracks" FromRole="Artist_Tracks_Source" ToRole="Artist_Tracks_Target" />
+        </EntityType>
+        <EntityType Name="Genre" customannotation:ClrType="MusicDataModels.Genre, MusicDataModels, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Tracks" Relationship="Self.Genre_Tracks" FromRole="Genre_Tracks_Source" ToRole="Genre_Tracks_Target" />
+        </EntityType>
+        <EntityType Name="PlayListTrack" customannotation:ClrType="MusicDataModels.PlayListTrack, MusicDataModels, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="TrackId" />
+            <PropertyRef Name="PlaylistId" />
+          </Key>
+          <Property Name="TrackId" Type="Int32" Nullable="false" />
+          <Property Name="PlaylistId" Type="Int32" Nullable="false" />
+          <Property Name="TrackNumber" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Playlist" Relationship="Self.Playlist_PlayListTracks" FromRole="Playlist_PlayListTracks_Target" ToRole="Playlist_PlayListTracks_Source" />
+          <NavigationProperty Name="Track" Relationship="Self.PlayListTrack_Track" FromRole="PlayListTrack_Track_Source" ToRole="PlayListTrack_Track_Target" />
+        </EntityType>
+        <EntityType Name="Playlist" customannotation:ClrType="MusicDataModels.Playlist, MusicDataModels, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PlayListTracks" Relationship="Self.Playlist_PlayListTracks" FromRole="Playlist_PlayListTracks_Source" ToRole="Playlist_PlayListTracks_Target" />
+        </EntityType>
+        <EnumType Name="Gender" IsFlags="false" customannotation:ClrType="MusicDataModels.Gender, MusicDataModels, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" UnderlyingType="Int32">
+          <Member Name="Female" Value="0" />
+          <Member Name="Male" Value="1" />
+          <Member Name="Other" Value="2" />
+        </EnumType>
+        <Association Name="AlbumTrack_Album">
+          <End Role="AlbumTrack_Album_Source" Type="Self.AlbumTrack" Multiplicity="*" />
+          <End Role="AlbumTrack_Album_Target" Type="Self.Album" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="AlbumTrack_Album_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AlbumTrack_Album_Source">
+              <PropertyRef Name="AlbumId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Track_AlbumTracks">
+          <End Role="Track_AlbumTracks_Source" Type="Self.Track" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Track_AlbumTracks_Target" Type="Self.AlbumTrack" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Track_AlbumTracks_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Track_AlbumTracks_Target">
+              <PropertyRef Name="TrackId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Artist_Tracks">
+          <End Role="Artist_Tracks_Source" Type="Self.Artist" Multiplicity="*" />
+          <End Role="Artist_Tracks_Target" Type="Self.Track" Multiplicity="*" />
+        </Association>
+        <Association Name="Genre_Tracks">
+          <End Role="Genre_Tracks_Source" Type="Self.Genre" Multiplicity="*" />
+          <End Role="Genre_Tracks_Target" Type="Self.Track" Multiplicity="*" />
+        </Association>
+        <Association Name="Playlist_PlayListTracks">
+          <End Role="Playlist_PlayListTracks_Source" Type="Self.Playlist" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Playlist_PlayListTracks_Target" Type="Self.PlayListTrack" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Playlist_PlayListTracks_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Playlist_PlayListTracks_Target">
+              <PropertyRef Name="PlaylistId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PlayListTrack_Track">
+          <End Role="PlayListTrack_Track_Source" Type="Self.PlayListTrack" Multiplicity="*" />
+          <End Role="PlayListTrack_Track_Target" Type="Self.Track" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="PlayListTrack_Track_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlayListTrack_Track_Source">
+              <PropertyRef Name="TrackId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MusicDbContext" customannotation:UseClrTypes="true">
+          <EntitySet Name="Albums" EntityType="Self.Album" />
+          <EntitySet Name="AlbumTracks" EntityType="Self.AlbumTrack" />
+          <EntitySet Name="Tracks" EntityType="Self.Track" />
+          <EntitySet Name="Artists" EntityType="Self.Artist" />
+          <EntitySet Name="Genres" EntityType="Self.Genre" />
+          <EntitySet Name="PlayListTracks" EntityType="Self.PlayListTrack" />
+          <EntitySet Name="Playlists" EntityType="Self.Playlist" />
+          <AssociationSet Name="AlbumTrack_Album" Association="Self.AlbumTrack_Album">
+            <End Role="AlbumTrack_Album_Source" EntitySet="AlbumTracks" />
+            <End Role="AlbumTrack_Album_Target" EntitySet="Albums" />
+          </AssociationSet>
+          <AssociationSet Name="Track_AlbumTracks" Association="Self.Track_AlbumTracks">
+            <End Role="Track_AlbumTracks_Source" EntitySet="Tracks" />
+            <End Role="Track_AlbumTracks_Target" EntitySet="AlbumTracks" />
+          </AssociationSet>
+          <AssociationSet Name="Artist_Tracks" Association="Self.Artist_Tracks">
+            <End Role="Artist_Tracks_Source" EntitySet="Artists" />
+            <End Role="Artist_Tracks_Target" EntitySet="Tracks" />
+          </AssociationSet>
+          <AssociationSet Name="Genre_Tracks" Association="Self.Genre_Tracks">
+            <End Role="Genre_Tracks_Source" EntitySet="Genres" />
+            <End Role="Genre_Tracks_Target" EntitySet="Tracks" />
+          </AssociationSet>
+          <AssociationSet Name="Playlist_PlayListTracks" Association="Self.Playlist_PlayListTracks">
+            <End Role="Playlist_PlayListTracks_Source" EntitySet="Playlists" />
+            <End Role="Playlist_PlayListTracks_Target" EntitySet="PlayListTracks" />
+          </AssociationSet>
+          <AssociationSet Name="PlayListTrack_Track" Association="Self.PlayListTrack_Track">
+            <End Role="PlayListTrack_Track_Source" EntitySet="PlayListTracks" />
+            <End Role="PlayListTrack_Track_Target" EntitySet="Tracks" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </ConceptualModels>
+    <Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CodeFirstDatabase" CdmEntityContainer="MusicDbContext">
+          <EntitySetMapping Name="Albums">
+            <EntityTypeMapping TypeName="MusicDataLayer.Album">
+              <MappingFragment StoreEntitySet="Album">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Release" ColumnName="Release" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AlbumTracks">
+            <EntityTypeMapping TypeName="MusicDataLayer.AlbumTrack">
+              <MappingFragment StoreEntitySet="AlbumTrack">
+                <ScalarProperty Name="TrackId" ColumnName="TrackId" />
+                <ScalarProperty Name="AlbumId" ColumnName="AlbumId" />
+                <ScalarProperty Name="TrackNumber" ColumnName="TrackNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tracks">
+            <EntityTypeMapping TypeName="MusicDataLayer.Track">
+              <MappingFragment StoreEntitySet="Track">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="Release" ColumnName="Release" />
+                <ScalarProperty Name="NumberOfPlay" ColumnName="NumberOfPlay" />
+                <ScalarProperty Name="TrackLocation" ColumnName="TrackLocation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Artists">
+            <EntityTypeMapping TypeName="MusicDataLayer.Artist">
+              <MappingFragment StoreEntitySet="Artist">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="RealName" ColumnName="RealName" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="BirthCountry" ColumnName="BirthCountry" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genres">
+            <EntityTypeMapping TypeName="MusicDataLayer.Genre">
+              <MappingFragment StoreEntitySet="Genre">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlayListTracks">
+            <EntityTypeMapping TypeName="MusicDataLayer.PlayListTrack">
+              <MappingFragment StoreEntitySet="PlayListTrack">
+                <ScalarProperty Name="TrackId" ColumnName="TrackId" />
+                <ScalarProperty Name="PlaylistId" ColumnName="PlaylistId" />
+                <ScalarProperty Name="TrackNumber" ColumnName="TrackNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Playlists">
+            <EntityTypeMapping TypeName="MusicDataLayer.Playlist">
+              <MappingFragment StoreEntitySet="Playlist">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Artist_Tracks" TypeName="MusicDataLayer.Artist_Tracks" StoreEntitySet="ArtistTrack">
+            <EndProperty Name="Artist_Tracks_Source">
+              <ScalarProperty Name="Id" ColumnName="Artist_Id" />
+            </EndProperty>
+            <EndProperty Name="Artist_Tracks_Target">
+              <ScalarProperty Name="Id" ColumnName="Track_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="Genre_Tracks" TypeName="MusicDataLayer.Genre_Tracks" StoreEntitySet="GenreTrack">
+            <EndProperty Name="Genre_Tracks_Source">
+              <ScalarProperty Name="Id" ColumnName="Genre_Id" />
+            </EndProperty>
+            <EndProperty Name="Genre_Tracks_Target">
+              <ScalarProperty Name="Id" ColumnName="Track_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </Mappings>
+    <StorageModels>
+      <Schema Namespace="CodeFirstDatabaseSchema" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Album">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Release" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AlbumTrack">
+          <Key>
+            <PropertyRef Name="TrackId" />
+            <PropertyRef Name="AlbumId" />
+          </Key>
+          <Property Name="TrackId" Type="int" customannotation:Index="{ Name: IX_TrackId, Order: 0 }" Nullable="false" />
+          <Property Name="AlbumId" Type="int" customannotation:Index="{ Name: IX_AlbumId, Order: 0 }" Nullable="false" />
+          <Property Name="TrackNumber" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Track">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Length" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Release" Type="date" Nullable="false" />
+          <Property Name="NumberOfPlay" Type="bigint" Nullable="false" />
+          <Property Name="TrackLocation" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Artist">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="RealName" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Gender" Type="int" Nullable="false" />
+          <Property Name="BirthCountry" Type="nvarchar(max)" Nullable="true" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PlayListTrack">
+          <Key>
+            <PropertyRef Name="TrackId" />
+            <PropertyRef Name="PlaylistId" />
+          </Key>
+          <Property Name="TrackId" Type="int" customannotation:Index="{ Name: IX_TrackId, Order: 0 }" Nullable="false" />
+          <Property Name="PlaylistId" Type="int" customannotation:Index="{ Name: IX_PlaylistId, Order: 0 }" Nullable="false" />
+          <Property Name="TrackNumber" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Playlist">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+        </EntityType>
+        <EntityType Name="ArtistTrack">
+          <Key>
+            <PropertyRef Name="Artist_Id" />
+            <PropertyRef Name="Track_Id" />
+          </Key>
+          <Property Name="Artist_Id" Type="int" customannotation:Index="{ Name: IX_Artist_Id, Order: 0 }" Nullable="false" />
+          <Property Name="Track_Id" Type="int" customannotation:Index="{ Name: IX_Track_Id, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GenreTrack">
+          <Key>
+            <PropertyRef Name="Genre_Id" />
+            <PropertyRef Name="Track_Id" />
+          </Key>
+          <Property Name="Genre_Id" Type="int" customannotation:Index="{ Name: IX_Genre_Id, Order: 0 }" Nullable="false" />
+          <Property Name="Track_Id" Type="int" customannotation:Index="{ Name: IX_Track_Id, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <Association Name="AlbumTrack_Album">
+          <End Role="Album" Type="Self.Album" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AlbumTrack" Type="Self.AlbumTrack" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Album">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AlbumTrack">
+              <PropertyRef Name="AlbumId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Track_AlbumTracks">
+          <End Role="Track" Type="Self.Track" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AlbumTrack" Type="Self.AlbumTrack" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Track">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AlbumTrack">
+              <PropertyRef Name="TrackId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Artist_Tracks_Source">
+          <End Role="Artist" Type="Self.Artist" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ArtistTrack" Type="Self.ArtistTrack" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Artist">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArtistTrack">
+              <PropertyRef Name="Artist_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Artist_Tracks_Target">
+          <End Role="Track" Type="Self.Track" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ArtistTrack" Type="Self.ArtistTrack" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Track">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArtistTrack">
+              <PropertyRef Name="Track_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Genre_Tracks_Source">
+          <End Role="Genre" Type="Self.Genre" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="GenreTrack" Type="Self.GenreTrack" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GenreTrack">
+              <PropertyRef Name="Genre_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Genre_Tracks_Target">
+          <End Role="Track" Type="Self.Track" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="GenreTrack" Type="Self.GenreTrack" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Track">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GenreTrack">
+              <PropertyRef Name="Track_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Playlist_PlayListTracks">
+          <End Role="Playlist" Type="Self.Playlist" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PlayListTrack" Type="Self.PlayListTrack" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Playlist">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlayListTrack">
+              <PropertyRef Name="PlaylistId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PlayListTrack_Track">
+          <End Role="Track" Type="Self.Track" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PlayListTrack" Type="Self.PlayListTrack" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Track">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlayListTrack">
+              <PropertyRef Name="TrackId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CodeFirstDatabase">
+          <EntitySet Name="Album" EntityType="Self.Album" Schema="dbo" Table="Albums" />
+          <EntitySet Name="AlbumTrack" EntityType="Self.AlbumTrack" Schema="dbo" Table="AlbumTracks" />
+          <EntitySet Name="Track" EntityType="Self.Track" Schema="dbo" Table="Tracks" />
+          <EntitySet Name="Artist" EntityType="Self.Artist" Schema="dbo" Table="Artists" />
+          <EntitySet Name="Genre" EntityType="Self.Genre" Schema="dbo" Table="Genres" />
+          <EntitySet Name="PlayListTrack" EntityType="Self.PlayListTrack" Schema="dbo" Table="PlayListTracks" />
+          <EntitySet Name="Playlist" EntityType="Self.Playlist" Schema="dbo" Table="Playlists" />
+          <EntitySet Name="ArtistTrack" EntityType="Self.ArtistTrack" Schema="dbo" Table="ArtistTracks" />
+          <EntitySet Name="GenreTrack" EntityType="Self.GenreTrack" Schema="dbo" Table="GenreTracks" />
+          <AssociationSet Name="AlbumTrack_Album" Association="Self.AlbumTrack_Album">
+            <End Role="Album" EntitySet="Album" />
+            <End Role="AlbumTrack" EntitySet="AlbumTrack" />
+          </AssociationSet>
+          <AssociationSet Name="Track_AlbumTracks" Association="Self.Track_AlbumTracks">
+            <End Role="Track" EntitySet="Track" />
+            <End Role="AlbumTrack" EntitySet="AlbumTrack" />
+          </AssociationSet>
+          <AssociationSet Name="Artist_Tracks_Source" Association="Self.Artist_Tracks_Source">
+            <End Role="Artist" EntitySet="Artist" />
+            <End Role="ArtistTrack" EntitySet="ArtistTrack" />
+          </AssociationSet>
+          <AssociationSet Name="Artist_Tracks_Target" Association="Self.Artist_Tracks_Target">
+            <End Role="Track" EntitySet="Track" />
+            <End Role="ArtistTrack" EntitySet="ArtistTrack" />
+          </AssociationSet>
+          <AssociationSet Name="Genre_Tracks_Source" Association="Self.Genre_Tracks_Source">
+            <End Role="Genre" EntitySet="Genre" />
+            <End Role="GenreTrack" EntitySet="GenreTrack" />
+          </AssociationSet>
+          <AssociationSet Name="Genre_Tracks_Target" Association="Self.Genre_Tracks_Target">
+            <End Role="Track" EntitySet="Track" />
+            <End Role="GenreTrack" EntitySet="GenreTrack" />
+          </AssociationSet>
+          <AssociationSet Name="Playlist_PlayListTracks" Association="Self.Playlist_PlayListTracks">
+            <End Role="Playlist" EntitySet="Playlist" />
+            <End Role="PlayListTrack" EntitySet="PlayListTrack" />
+          </AssociationSet>
+          <AssociationSet Name="PlayListTrack_Track" Association="Self.PlayListTrack_Track">
+            <End Role="Track" EntitySet="Track" />
+            <End Role="PlayListTrack" EntitySet="PlayListTrack" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </StorageModels>
+  </Runtime>
+  <Designer>
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="ProcessDependentTemplatesOnSave" Value="False" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <Diagrams >
+      <Diagram DiagramId="fb8a44da16d9487aaae91f790b96740e" Name="Diagram1">
+        <EntityTypeShape EntityType="MusicDataLayer.Album" Width="1.5" PointX="9.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MusicDataLayer.AlbumTrack" Width="1.5" PointX="7.5" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MusicDataLayer.Track" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="MusicDataLayer.Artist" Width="1.5" PointX="4.25" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MusicDataLayer.Genre" Width="1.5" PointX="5.875" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MusicDataLayer.PlayListTrack" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MusicDataLayer.Playlist" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
+        <AssociationConnector Association="MusicDataLayer.AlbumTrack_Album" ManuallyRouted="false" />
+        <AssociationConnector Association="MusicDataLayer.Track_AlbumTracks" ManuallyRouted="false" />
+        <AssociationConnector Association="MusicDataLayer.Artist_Tracks" ManuallyRouted="false" />
+        <AssociationConnector Association="MusicDataLayer.Genre_Tracks" ManuallyRouted="false" />
+        <AssociationConnector Association="MusicDataLayer.Playlist_PlayListTracks" ManuallyRouted="false" />
+        <AssociationConnector Association="MusicDataLayer.PlayListTrack_Track" ManuallyRouted="false" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</Edmx>
