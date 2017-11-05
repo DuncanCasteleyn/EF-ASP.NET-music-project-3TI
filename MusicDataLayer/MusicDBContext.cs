@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Linq;
 using MusicDataModels;
 
 namespace MusicDataLayer
@@ -18,5 +19,10 @@ namespace MusicDataLayer
         public DbSet<AlbumTrack> AlbumTracks { get; set; }
 
         public DbSet<PlayListTrack> PlayListTracks { get; set; }
+
+        public int GetSavedTracks()
+        {
+            return this.Database.ExecuteSqlCommand("SELECT COUNT(*) from dbo.Tracks");
+        }
     }
 }
