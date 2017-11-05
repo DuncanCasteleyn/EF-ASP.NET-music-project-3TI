@@ -1,7 +1,9 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using MusicApplication.Models;
 using MusicDataLayer;
 using MusicDataModels;
 
@@ -14,7 +16,10 @@ namespace MusicApplication.Controllers
         // GET: Tracks
         public ActionResult Index()
         {
-            return View(db.Tracks.ToList());
+            var tracks = db.Tracks
+               .Include(track => track.Artists)
+               .Include(track => track.Genres);
+            return View(tracks.ToList());
         }
 
         // GET: Tracks/Details/5
@@ -24,7 +29,12 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Track track = db.Tracks.Find(id);
+
+            Track track = db.Tracks
+                .Include(track1 => track1.Artists)
+                .Include(track1 => track1.Genres)
+                .FirstOrDefault(track1 => track1.Id == id);
+
             if (track == null)
             {
                 return HttpNotFound();
@@ -35,7 +45,25 @@ namespace MusicApplication.Controllers
         // GET: Tracks/Create
         public ActionResult Create()
         {
-            return View();
+            var trackArtistViewModel = new TrackViewModel();
+            var allArtistsList = db.Artists.ToList();
+            trackArtistViewModel.AllArtists = allArtistsList.Select(artist =>
+                new SelectListItem()
+                {
+                    Text = artist.Name,
+                    Value = artist.Id.ToString()
+                }
+            );
+
+            var allGenresList = db.Genres.ToList();
+            trackArtistViewModel.AllGenres = allGenresList.Select(artist =>
+                new SelectListItem()
+                {
+                    Text = artist.Name,
+                    Value = artist.Id.ToString()
+                }
+            );
+            return View(trackArtistViewModel);
         }
 
         // POST: Tracks/Create
@@ -43,16 +71,23 @@ namespace MusicApplication.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Length,Release,NumberOfPlay,TrackLocation")] Track track)
+        public ActionResult Create(TrackViewModel trackView)
         {
             if (ModelState.IsValid)
             {
-                db.Tracks.Add(track);
+                var artists = db.Artists.Include(artist => artist.Tracks).ToList().FindAll(artist => trackView.SelectedArtists.Contains(artist.Id));
+                var genres = db.Genres.Include(genre => genre.Tracks).ToList().FindAll(genre => trackView.SelectedGenres.Contains(genre.Id));
+                trackView.Track.Artists = artists;
+                trackView.Track.Genres = genres;
+                artists.ForEach(artist => artist.Tracks.Add(trackView.Track));
+                genres.ForEach(genre => genre.Tracks.Add(trackView.Track));
+
+                db.Tracks.Add(trackView.Track);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(track);
+            return View(trackView);
         }
 
         // GET: Tracks/Edit/5
@@ -62,12 +97,37 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Track track = db.Tracks.Find(id);
-            if (track == null)
+
+            var trackArtistViewModel = new TrackViewModel
+            {
+                Track = db.Tracks.Include(track => track.Artists).Include(track => track.Genres).FirstOrDefault(i => i.Id == id),
+            };
+
+            if (trackArtistViewModel.Track == null)
             {
                 return HttpNotFound();
             }
-            return View(track);
+
+            var allArtistsList = db.Artists.ToList();
+            trackArtistViewModel.AllArtists = allArtistsList.Select(artist =>
+                new SelectListItem()
+                {
+                    Text = artist.Name,
+                    Value = artist.Id.ToString()
+                }
+            );
+
+            var allGenresList = db.Genres.ToList();
+            trackArtistViewModel.AllGenres = allGenresList.Select(artist =>
+                new SelectListItem()
+                {
+                    Text = artist.Name,
+                    Value = artist.Id.ToString()
+                }
+            );
+
+
+            return View(trackArtistViewModel);
         }
 
         // POST: Tracks/Edit/5
@@ -75,15 +135,22 @@ namespace MusicApplication.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Length,Release,NumberOfPlay,TrackLocation")] Track track)
+        public ActionResult Edit(TrackViewModel trackView)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(track).State = EntityState.Modified;
+                var artists = db.Artists.Include(artist => artist.Tracks).ToList().FindAll(artist => trackView.SelectedArtists.Contains(artist.Id));
+                var genres = db.Genres.Include(genre => genre.Tracks).ToList().FindAll(genre => trackView.SelectedGenres.Contains(genre.Id));
+                trackView.Track.Artists = artists;
+                trackView.Track.Genres = genres;
+                artists.ForEach(artist => artist.Tracks.Add(trackView.Track));
+                genres.ForEach(genre => genre.Tracks.Add(trackView.Track));
+
+                db.Entry(trackView.Track).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(track);
+            return View(trackView);
         }
 
         // GET: Tracks/Delete/5
@@ -93,7 +160,11 @@ namespace MusicApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Track track = db.Tracks.Find(id);
+            Track track = db.Tracks
+                .Include(track1 => track1.Artists)
+                .Include(track1 => track1.Genres)
+                .FirstOrDefault(i => i.Id == id);
+
             if (track == null)
             {
                 return HttpNotFound();
