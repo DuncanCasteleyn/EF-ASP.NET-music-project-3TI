@@ -4,6 +4,7 @@ using System.Net;
 using System.Web.Mvc;
 using MusicDataLayer;
 using MusicDataModels;
+using WebGrease.Css.Extensions;
 
 namespace MusicApplication.Controllers
 {
@@ -14,7 +15,12 @@ namespace MusicApplication.Controllers
         // GET: Playlists
         public ActionResult Index()
         {
-            return View(db.Playlists.ToList());
+            var playlists = db.Playlists.Include(playlist => playlist.PlayListTracks);
+            playlists.ForEach(playlist =>
+            {
+                playlist.PlayListTracks.ForEach(track => track.Track = db.Tracks.Find(track.TrackId));
+            });
+            return View(playlists.ToList());
         }
 
         // GET: Playlists/Details/5
@@ -25,10 +31,12 @@ namespace MusicApplication.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Playlist playlist = db.Playlists.Find(id);
+            db.Entry(playlist).Collection(playlist1 => playlist1.PlayListTracks).Load();
             if (playlist == null)
             {
                 return HttpNotFound();
             }
+            playlist.PlayListTracks.ForEach(track => track.Track = db.Tracks.Find(track.TrackId));
             return View(playlist);
         }
 
