@@ -18,9 +18,5 @@ namespace MusicDataLayer
         public DbSet<AlbumTrack> AlbumTracks { get; set; }
 
         public DbSet<PlayListTrack> PlayListTracks { get; set; }
-
-        public DbSet<TrackGenre> TrackGenres { get; set; }
-
-        public DbSet<TrackArtist> TrackArtists { get; set; }
     }
 }

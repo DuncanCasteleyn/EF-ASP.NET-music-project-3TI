@@ -9,8 +9,8 @@ namespace MusicDataModels
     {
         public Track()
         {
-            TrackArtists = new HashSet<TrackArtist>();
-            TrackGenres = new HashSet<TrackGenre>();
+            Artists = new HashSet<Artist>();
+            Genres = new HashSet<Genre>();
             AlbumTracks = new HashSet<AlbumTrack>();
             PlaylistTracks = new HashSet<PlayListTrack>();
         }
@@ -31,9 +31,9 @@ namespace MusicDataModels
         public string TrackLocation { get; set; }
 
         [Required]
-        public ICollection<TrackArtist> TrackArtists { get; set; }
+        public ICollection<Artist> Artists { get; set; }
         [Required]
-        public ICollection<TrackGenre> TrackGenres { get; set; }
+        public ICollection<Genre> Genres { get; set; }
         public ICollection<AlbumTrack> AlbumTracks { get; set; }
         public ICollection<PlayListTrack> PlaylistTracks { get; set; }
     }

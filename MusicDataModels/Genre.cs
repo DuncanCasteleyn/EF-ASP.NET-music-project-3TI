@@ -7,13 +7,13 @@ namespace MusicDataModels
     {
         public Genre()
         {
-            TrackGenres = new HashSet<TrackGenre>();
+            Tracks = new HashSet<Track>();
         }
 
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
 
-        public ICollection<TrackGenre> TrackGenres { get; set; }
+        public ICollection<Track> Tracks { get; set; }
     }
 }

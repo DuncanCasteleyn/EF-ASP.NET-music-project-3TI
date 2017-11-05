@@ -7,7 +7,7 @@ namespace MusicDataModels
     {
         public Artist()
         {
-            TrackArtists = new HashSet<TrackArtist>();
+            Tracks = new HashSet<Track>();
         }
 
         public int Id { get; set; }
@@ -17,7 +17,7 @@ namespace MusicDataModels
         public Gender Gender { get; set; }
         public string BirthCountry { get; set; }
 
-        public ICollection<TrackArtist> TrackArtists { get; set; }
+        public ICollection<Track> Tracks { get; set; }
     }
 
     public enum Gender
